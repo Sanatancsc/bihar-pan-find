@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Generate Payment Link</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; }
+        h2 { margin-top: 0; color: #333; text-align: center; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        button { background: #0070f3; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #0051cb; }
+        .output { background: #eef2f6; padding: 12px; border-radius: 6px; margin-top: 15px; word-break: break-all; display: none; font-size: 14px; border: 1px dashed #0070f3; }
+        .whatsapp-btn { background: #25D366; color: white; text-align: center; text-decoration: none; display: none; padding: 12px; border-radius: 6px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Create Payment Link</h2>
+    <form id="linkForm">
+        <input type="text" id="name" placeholder="Customer Name" required>
+        <input type="text" id="work" placeholder="Work/Service Name" required>
+        <input type="number" id="amount" placeholder="Amount (₹)" required>
+        <button type="submit">Generate Link</button>
+    </form>
+
+    <div id="linkOutput" class="output"></div>
+    <a id="whatsappBtn" href="#" target="_blank" class="whatsapp-btn">Share on WhatsApp</a>
+</div>
+
+<script>
+document.getElementById('linkForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const work = encodeURIComponent(document.getElementById('work').value);
+    const amount = encodeURIComponent(document.getElementById('amount').value);
+    const txnId = 'TXN' + Math.floor(Math.random() * 100000);
+
+    // Vercel par deploy hone ke baad jo URL milega, use yahan windows.location se automatic pick kar lenge
+    const baseUrl = window.location.origin + "/pay.html";
+    const finalPaymentLink = `${baseUrl}?id=${txnId}&name=${name}&work=${work}&amt=${amount}`;
+    
+    // Output show karna
+    const outputDiv = document.getElementById('linkOutput');
+    outputDiv.style.display = 'block';
+    outputDiv.innerHTML = `<strong>Copy Link:</strong><br>${finalPaymentLink}`;
+    
+    // WhatsApp button active karna
+    const whatsappText = encodeURIComponent(`Hello, aapki payment ka link taiyar hai.\n\nWork: ${decodeURIComponent(work)}\nAmount: ₹${decodeURIComponent(amount)}\n\nKripya is link par click karke payment karein: ${finalPaymentLink}`);
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    whatsappBtn.href = `https://api.whatsapp.com/send?text=${whatsappText}`;
+    whatsappBtn.style.display = 'block';
+});
+</script>
+
+</body>
+</html>

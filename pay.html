@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure UPI Payment</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #0070f3, #7928ca); height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 100%; max-width: 400px; text-align: center; }
+        .amount { font-size: 36px; font-weight: 800; color: #111; margin: 15px 0; }
+        .details { background: #f7f9fa; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 25px; font-size: 15px; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #444; }
+        .row strong { color: #000; }
+        .pay-btn { display: block; background: #10b981; color: white; text-decoration: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: 0.2s; }
+        .pay-btn:hover { background: #059669; }
+        .secure { font-size: 12px; color: #888; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h3 style="margin:0; color:#666;">Payment Request</h3>
+    <div id="displayAmount" class="amount">₹0</div>
+    
+    <div class="details">
+        <div class="row"><span>Customer:</span> <strong id="displayName">-</strong></div>
+        <div class="row"><span>Purpose:</span> <strong id="displayWork">-</strong></div>
+        <div class="row"><span>Order ID:</span> <span id="displayId">-</span></div>
+    </div>
+
+    <a id="upiLink" href="#" class="pay-btn">Pay via Any UPI App</a>
+    
+    <div class="secure">🔒 Paytm Verified Business Merchant</div>
+</div>
+
+<script>
+    // URL parameters extract karne ke liye
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name') || 'Customer';
+    const work = urlParams.get('work') || 'Services';
+    const amount = urlParams.get('amt') || '0';
+    const id = urlParams.get('id') || 'TXN' + Date.now();
+
+    // Elements update karna
+    document.getElementById('displayName').innerText = decodeURIComponent(name);
+    document.getElementById('displayWork').innerText = decodeURIComponent(work);
+    document.getElementById('displayAmount').innerText = '₹' + amount;
+    document.getElementById('displayId').innerText = id;
+
+    // Aapka Paytm Business UPI ID aur Name
+    const myUpiId = "paytm.s1q2kr2@pty"; 
+    const myBusinessName = "Sanatan CSC Center";
+
+    // Standard UPI Protocol URL
+    const upiIntent = `upi://pay?pa=${myUpiId}&pn=${encodeURIComponent(myBusinessName)}&tr=${id}&tn=${encodeURIComponent(work)}&am=${amount}&cu=INR`;
+    
+    // Link trigger apply karna
+    document.getElementById('upiLink').href = upiIntent;
+</script>
+
+</body>
+</html>
