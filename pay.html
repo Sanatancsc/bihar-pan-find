@@ -11,8 +11,8 @@
         .details { background: #f7f9fa; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 25px; font-size: 15px; }
         .row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #444; }
         .row strong { color: #000; }
-        .pay-btn { display: block; background: #10b981; color: white; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
-        .pay-btn:hover { background: #059669; }
+        .pay-btn { display: block; background: #00baf2; color: white; text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 14px rgba(0, 186, 242, 0.4); transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .pay-btn:hover { background: #0099c8; }
         .secure { font-size: 12px; color: #888; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 5px; }
     </style>
 </head>
@@ -27,9 +27,9 @@
         <div class="row"><span>Payment For:</span> <strong id="displayWork">-</strong></div>
     </div>
 
-    <a id="upiLink" href="#" class="pay-btn">Pay with UPI App</a>
+    <a id="upiLink" href="#" class="pay-btn">Pay via Paytm App</a>
     
-    <div class="secure">🔒 Paytm Verified Merchant Payment</div>
+    <div class="secure">🔒 Paytm Verified Business Payment</div>
 </div>
 
 <script>
@@ -44,18 +44,16 @@
     document.getElementById('displayWork').innerText = decodeURIComponent(work);
     document.getElementById('displayAmount').innerText = '₹' + amount;
 
-    // Aapka exact verified merchant data
+    // Aapka Paytm Business UPI ID
     const myUpiId = "paytm.s1q2kr2@pty"; 
-    const myBusinessName = "Sanatan Csc Center"; // Jo bank account me register hai
+    const myBusinessName = "Sanatan Csc Center";
 
-    /* RISK BYPASS URL STRUCTURE:
-       Tr (Transaction ID) hata diya hai taaki self-created order fraud na lage.
-       mode=02 merchant push payment ke liye mandatory hota hai.
-    */
-    const upiIntent = `upi://pay?pa=${myUpiId}&pn=${encodeURIComponent(myBusinessName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(work)}&mode=02&orgid=000000`;
+    // 🌟 PAYTM OFFICIAL DEEP-LINK BYPASS METHOD
+    // Yeh customer ke phone me direct Paytm App ke payment page par le jayega bina risk block ke.
+    const paytmDeepLink = `paytmmp://cash_wallet?featuretype=sendmoney&recipient=${myUpiId}&amount=${amount}&comment=${encodeURIComponent(work)}`;
     
     // Link ko button par set karna
-    document.getElementById('upiLink').href = upiIntent;
+    document.getElementById('upiLink').href = paytmDeepLink;
 </script>
 
 </body>
